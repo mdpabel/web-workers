@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { expensive } from "./expensiveTask-worker";
+import useAsync from "./useAsync";
 
-function App() {
+const App = () => {
+  const { run, data, status, error } = useAsync({ status: "pending" });
+
+  useEffect(() => {
+    return run(expensive());
+  }, [run]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>A Component</h1>
+      <h3>
+        {status === "pending" ? "Loading..." : null}
+        {status === "resolved" ? data : null}
+        {status === "rejected" ? error : null}
+      </h3>
+      <h1>Another component</h1>
     </div>
   );
-}
+};
 
 export default App;
